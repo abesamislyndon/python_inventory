@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<!-- login component -->
+<div class="min-h-screen bg-black">
+    <div class="flex justify-end">
+        <div class="bg-white min-h-screen w-1/2 flex justify-center items-center">
+            <div class="w-3/4 p-20">
+               <form method="POST" action="{% url 'login' %}">
+                   {% csrf_token %}
+                   <div>
+                       <h1 class="text-2xl font-bold">Login to your accounts</h1>
+                   </div>
+                   <div class="mt-5">
+                       <label class="block text-md mb-2" for="username">Username</label>
+                       <input class="px-4 w-full border-2 py-2 rounded-md text-sm outline-none" type="text"
+                           name="username" placeholder="username" required>
+                   </div>
+                   <div class="my-3">
+                       <label class="block text-md mb-2" for="password">Password</label>
+                       <input class="px-4 w-full border-2 py-2 rounded-md text-sm outline-none" type="password"
+                           name="password" placeholder="password" required>
+                   </div>
+                   <div class="flex justify-between">
+                       <div>
+                           <input class="cursor-pointer" type="checkbox" name="remember_me">
+                           <span class="text-sm">Remember Me</span>
+                       </div>
+                       <span class="text-sm text-blue-700 hover:underline cursor-pointer">Forgot password?</span>
+                   </div>
+                   <div>
+                       <button
+                           class="mt-4 mb-3 w-full bg-green-500 hover:bg-green-400 text-white py-2 rounded-md transition duration-100">
+                           Login now
+                       </button>
+                   </div>
+               </form>
+                <p class="mt-8"> Dont have an account? <span class="cursor-pointer text-sm text-blue-600"> Join free
+                        today</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
