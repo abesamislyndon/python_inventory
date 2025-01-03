@@ -1,13 +1,14 @@
+{% load static tailwind_tags %}
+{% load static %}
 <!DOCTYPE html>
-  {% load static %}
-  <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Inventory Management System</title>
-      {% load static %}
-      <link rel="stylesheet" href="{% static 'css/output.css' %}" type="text/css">
-      <!-- We add the output Tailwind CSS here -->
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}" type="text/css">
+    {% tailwind_css %}
   </head>
   <body>
          <!-- Sidebar -->
@@ -19,7 +20,7 @@
                </div>
                <nav class="text-sm text-gray-300">
                    <ul class="flex flex-col">
-                       <li class="px-4 cursor-pointer bg-gray-500 text-gray-800 hover:bg-gray-700  hover:text-white">
+                       <li class="px-4 cursor-pointer bg-gray-500 text-gray-800 hover:bg-gray-700  hover:text-white text-sm">
                            <a class="py-3 flex items-center" href="/">
                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                    stroke-width="1.5" stroke="currentColor" class="w-4 mr-3">
@@ -29,7 +30,7 @@
                                Dashboard
                            </a>
                        </li>
-                       <li class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold">USER MANAGEMENT
+                       <li class="px-4 py-2 text-[23px] uppercase tracking-wider text-gray-black font-bold">USER MANAGEMENT
                        </li>
                        <li class="px-4 cursor-pointer hover:bg-gray-700">
                            <a class="py-3 flex items-center" href="/">
