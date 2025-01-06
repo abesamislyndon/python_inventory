@@ -38,10 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'compressor',
-    'tailwind',
-    'theme',
-    'django_browser_reload',
-    # 'app.accounts',
+    'app.accounts',
     'app.dashboards',
 ]
 
@@ -53,13 +50,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "django_browser_reload.middleware.BrowserReloadMiddleware"
+    'app.accounts.middleware.RoleRequiredMiddleware',
+    
+    # "django_browser_reload.middleware.BrowserReloadMiddleware"
 ]
 
 ROOT_URLCONF = 'inven.urls'
 
-TAILWIND_APP_NAME = 'theme' 
-INTERNAL_IPS = ['127.0.0.1']
 
 TEMPLATES = [
     {
@@ -83,23 +80,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'inven.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'inven',
-#         'USER' : 'root',
-#         'PASSWORD' : 'root',
-#         'PORT' : '8889',
-#         'OPTIONS': {
-#             'unix_socket': '/Applications/MAMP/tmp/mysql/mysql.sock',  # Correct MAMP MySQL socket path
-#         },
-#     }
-# }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'inven',
+        'USER': 'lyndonabesamis',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '5432'
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = 'auth.User'  # This is Django's default user model
+
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -145,3 +143,6 @@ COMPRESS_ROOT = BASE_DIR / 'static'
 COMPRESS_ENABLED = True
 
 STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
+
+LOGIN_REDIRECT_URL = '/dashboards/'  # Redirect after successful login
+LOGOUT_REDIRECT_URL = '' 

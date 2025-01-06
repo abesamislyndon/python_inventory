@@ -1,9 +1,32 @@
-from django.shortcuts import render
+from django.contrib.auth.views import LoginView
+from django.contrib import messages
 
-# Create your views here.
-def register_account(request):
-    return render(request, 'accounts/register_account.html')
- 
 
-def reset_password(request):
-    return render(request, 'accounts/reset_password.html')
+from django.contrib.auth import logout  
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth.views import LoginView
+
+class CustomLoginView(LoginView):
+    
+    def form_invalid(self, form):
+        messages.error(self.request, "Invalid username or password. Please try again.")
+        return super().form_invalid(form)
+    
+    
+from django.http import HttpResponse
+
+def custom_logout(request):
+    # Log the user out
+    logout(request)
+    
+    # Add a success message after logout
+    messages.success(request, "You have successfully logged out.")
+    
+    # Create a response that disables caching
+    response = redirect('login')  # Make sure 'login' is the correct name
+    response['Cache-Control'] = 'no-store, no-cache, must-revalidate, proxy-revalidate'
+    response['Pragma'] = 'no-cache'
+    response['Expires'] = '0'
+    
+    return response
