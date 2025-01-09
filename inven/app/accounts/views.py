@@ -1,11 +1,7 @@
 from django.contrib.auth.views import LoginView
 from django.contrib import messages
-
-
 from django.contrib.auth import logout  
-from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.contrib.auth.views import LoginView
 
 class CustomLoginView(LoginView):
     
@@ -19,10 +15,8 @@ from django.http import HttpResponse
 def custom_logout(request):
     # Log the user out
     logout(request)
-    
     # Add a success message after logout
     messages.success(request, "You have successfully logged out.")
-    
     # Create a response that disables caching
     response = redirect('login')  # Make sure 'login' is the correct name
     response['Cache-Control'] = 'no-store, no-cache, must-revalidate, proxy-revalidate'

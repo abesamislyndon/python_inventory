@@ -13,7 +13,6 @@ class RoleRequiredMiddleware:
             reverse('logout'),  # Logout page
             # reverse('password_reset'),  # Password reset page (if applicable)
         ]
-
         # Allow static files (useful during development)
         if request.path.startswith('/static/'):
             return self.get_response(request)
@@ -33,7 +32,6 @@ class RoleRequiredMiddleware:
             if not request.user.is_superuser:  # Example: allow only superusers
                 messages.error(request, "You are not authorized to access this page.")
                 return redirect('login')  # Redirect to login page if unauthorized
-
         # Prevent caching of the page if the user is logged out or unauthorized
         response = self.get_response(request)
         response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
