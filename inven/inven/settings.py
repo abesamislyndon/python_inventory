@@ -11,9 +11,15 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+MEDIA_URL = '/media/'  # URL to access media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory where media files are stored
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+
 SECRET_KEY = 'django-insecure-1!=^-)1^gj!pu6dxt6y5t48gw00o92vus5%n3hme2j8-ox83l*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -26,12 +32,17 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'daphne',
     'django.contrib.staticfiles',
     'compressor',
     'app.accounts',
     'app.dashboards',
     'app.clients',
+ 
 ]
+
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -110,3 +121,7 @@ COMPRESS_ENABLED = True
 STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
 LOGIN_REDIRECT_URL = '/dashboards/'  # Redirect after successful login
 LOGOUT_REDIRECT_URL = '' 
+
+
+ASGI_APPLICATION = 'inven.asgi.application'
+

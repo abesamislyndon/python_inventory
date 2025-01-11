@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ client.client_name }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .marquee-container {
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      width: 100%;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 1rem;
+      animation: marquee 60s linear infinite;
+    }
+
+    .marquee-item {
+      background: #fff;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      flex: 0 0 auto;
+      max-width: 300px;
+      margin: 0;
+    }
+
+    .marquee-item img {
+      width: 100%;
+      height: auto;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .marquee-item-content {
+      padding: 1rem;
+    }
+
+    .marquee-item-content h2 {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .marquee-item-content p {
+      font-size: 0.875rem;
+      color: #555;
+      word-wrap: break-word;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="container mx-auto">
+    <h1 class="text-7xl font-bold mb-6 mt-15">{{ client.client_name }}</h1>
+
+    <div class="marquee-container">
+      <div id="marquee-track" class="marquee-track"></div>
+    </div>
+
+    {% if client_msgs|length == 0 %}
+      <p class="text-gray-600 text-center mt-10">No messages available for this client.</p>
+    {% endif %}
+  </div>
+
+  <script>
+    let messages = [];
+    let existingMessageIds = new Set();
+
+    async function fetchMessages() {
+      try {
+        const clientUrl = '{{ client.client_url }}';
+        const response = await fetch(`/clients/api/messages/${clientUrl}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (data.messages) {
+          addNewMessages(data.messages);
+        }
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+      }
+    }
+
+    function addNewMessages(newMessages) {
+      const marqueeTrack = document.getElementById('marquee-track');
+
+      newMessages.forEach((msg) => {
+        // Only add new messages
+        if (!existingMessageIds.has(msg.id)) {
+          existingMessageIds.add(msg.id);
+          const card = createMarqueeCard(msg);
+          marqueeTrack.appendChild(card);
+        }
+      });
+
+      // Duplicate content dynamically for infinite scroll
+    //  duplicateMarqueeContent();
+    }
+
+    function createMarqueeCard(msg) {
+      const card = document.createElement('div');
+      card.classList.add('marquee-item');
+
+      const imgElement = document.createElement('img');
+      imgElement.src = `/clients${msg.image_url}` || 'https://via.placeholder.com/150';
+      imgElement.alt = 'Message Image';
+
+      const contentDiv = document.createElement('div');
+      contentDiv.classList.add('marquee-item-content');
+
+      const guestName = document.createElement('h2');
+      guestName.textContent = `From: ${msg.guest_name}`;
+
+      const messageContent = document.createElement('p');
+      messageContent.textContent = msg.content;
+
+      contentDiv.appendChild(guestName);
+      contentDiv.appendChild(messageContent);
+
+      card.appendChild(imgElement);
+      card.appendChild(contentDiv);
+
+      return card;
+    }
+
+    {% comment %} function duplicateMarqueeContent() {
+      const marqueeTrack = document.getElementById('marquee-track');
+      const items = Array.from(marqueeTrack.children);
+
+      if (items.length > 0) {
+        // Duplicate only if necessary
+        items.forEach((item) => {
+          const clone = item.cloneNode(true);
+          marqueeTrack.appendChild(clone);
+        });
+      }
+    } {% endcomment %}
+
+    // Continuous fetch and update
+    setInterval(fetchMessages, 9000); // Fetch every 5 minutes
+
+    // Initial fetch
+    fetchMessages();
+  </script>
+</body>
+</html>
