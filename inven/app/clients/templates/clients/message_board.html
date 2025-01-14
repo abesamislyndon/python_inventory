@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ client.client_name }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Marquee Effect */
+    .marquee-container {
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    .marquee-track {
+      display: flex;
+      animation: marquee 60s linear infinite;
+      width: auto;
+    }
+
+    .marquee-item {
+      background: #fff;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      flex: 0 0 auto;
+      max-width: 300px;
+      margin: 0 1rem;
+      padding: 1rem;
+    }
+
+    .marquee-item img {
+      width: 100%;
+      height: auto;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .marquee-item-content {
+      padding: 1rem;
+    }
+
+    .marquee-item-content h2 {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .marquee-item-content p {
+      font-size: 0.875rem;
+      color: #555;
+      word-wrap: break-word;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    /* Carousel Styling */
+    .carousel {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      gap: 1rem;
+    }
+
+    .carousel-item {
+      flex: 0 0 auto;
+      width: 300px;
+      background-color: white;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 p-6">
+
+  <div class="container mx-auto">
+    <h1 class="mt-10 mb-20 text-3xl font-bold  text-center">ssss{{ client.client_name }}</h1>
+
+    <!-- Marquee Section -->
+    <div class="marquee-container">
+      <div id="marquee-track" class="marquee-track">
+        <!-- Marquee items will be inserted here dynamically -->
+        {% for message in messages %}
+          <div class="marquee-item">
+            <div class="marquee-item-content">
+              <h2 class="text-lg font-semibold">
+                {{ message.guest_name }} 
+                <span class="text-gray-500">({{ message.client.name|default:"Unknown Client" }})</span>
+              </h2>
+              <p>{{ message.content }}</p>
+              {% if message.image %}
+                <img src="http://localhost:8000/clients{{ message.image.url }}" alt="Message Image" class="mt-2 rounded shadow">
+              {% endif %}
+              <small class="text-gray-500">{{ message.created_at }}</small>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Carousel Section -->
+    {% comment %} <div id="carousel" class="carousel">
+      <!-- Carousel items will be inserted here dynamically -->
+    </div> {% endcomment %}
+  </div>
+
+  <script>
+    // WebSocket connection
+    const socket = new WebSocket('ws://' + window.location.host + '/ws/message_board/');
+
+    socket.onopen = function () {
+      console.log('WebSocket connected');
+    };
+
+    socket.onmessage = function (e) {
+      const data = JSON.parse(e.data);
+
+      // Insert new message into carousel
+
+      // Insert new message into marquee
+      const newMarqueeMessage = `
+        <div class="marquee-item">
+          <div class="marquee-item-content">
+            <h2 class="text-lg font-semibold">${data.message.guest_name}</h2>
+            <p>${data.message.content}</p>
+             ${data.message.image_url ? `<img src="http://localhost:8000/clients${ data.message.image_url }" alt="Message Image"
+              class="mt-2 rounded shadow">` : ""}
+            <small class="text-gray-500">${data.message.created_at}</small>
+          </div>
+        </div>
+      `;
+      const marqueeTrack = document.getElementById('marquee-track');
+      marqueeTrack.insertAdjacentHTML('beforeend', newMarqueeMessage);
+
+      // Adjust track width to fit new messages
+      const marqueeItems = document.querySelectorAll('.marquee-item');
+      const trackWidth = marqueeItems.length * 300; // Assuming each item has width of 300px
+      marqueeTrack.style.width = `${trackWidth}px`;
+
+      // Restart animation after adding new message
+      //marqueeTrack.style.animation = 'none';  // Reset animation
+      //marqueeTrack.offsetHeight; // Trigger reflow to reset the animation
+      //marqueeTrack.style.animation = 'marquee 60s linear infinite'; // Reapply the animation
+    };
+
+    socket.onclose = function () {
+      console.log('WebSocket disconnected');
+    };
+  </script>
+</body>
+</html>

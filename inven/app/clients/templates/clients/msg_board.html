@@ -74,86 +74,55 @@
   </div>
 
   <script>
-    let messages = [];
-    let existingMessageIds = new Set();
+    const marqueeTrack = document.getElementById('marquee-track');
 
-    async function fetchMessages() {
+    // Fetch initial data from the server
+    async function fetchInitialData() {
       try {
-        const clientUrl = '{{ client.client_url }}';
-        const response = await fetch(`/clients/api/messages/${clientUrl}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
+        const response = await fetch('/api/posts/'); // Replace with your endpoint
+        if (!response.ok) throw new Error('Failed to fetch initial data.');
         const data = await response.json();
-        if (data.messages) {
-          addNewMessages(data.messages);
-        }
+        updateMarquee(data);
       } catch (error) {
-        console.error('Error fetching messages:', error);
+        console.error('Error fetching initial data:', error);
       }
     }
 
-    function addNewMessages(newMessages) {
-      const marqueeTrack = document.getElementById('marquee-track');
-
-      newMessages.forEach((msg) => {
-        // Only add new messages
-        if (!existingMessageIds.has(msg.id)) {
-          existingMessageIds.add(msg.id);
-          const card = createMarqueeCard(msg);
-          marqueeTrack.appendChild(card);
-        }
+    // Update the marquee with new messages
+    function updateMarquee(messages) {
+      marqueeTrack.innerHTML = ''; // Clear existing messages
+      messages.forEach(message => {
+        const marqueeItem = document.createElement('div');
+        marqueeItem.className = 'marquee-item';
+        marqueeItem.innerHTML = `
+          <div class="marquee-item-content">
+            <h2>${message.title || 'Untitled'}</h2>
+            <p>${message.content || 'No content available.'}</p>
+          </div>
+        `;
+        marqueeTrack.appendChild(marqueeItem);
       });
-
-      // Duplicate content dynamically for infinite scroll
-    //  duplicateMarqueeContent();
     }
 
-    function createMarqueeCard(msg) {
-      const card = document.createElement('div');
-      card.classList.add('marquee-item');
+    // WebSocket connection
+    const socket = new WebSocket('ws://localhost:8001/ws/posts/');
 
-      const imgElement = document.createElement('img');
-      imgElement.src = `/clients${msg.image_url}` || 'https://via.placeholder.com/150';
-      imgElement.alt = 'Message Image';
+    socket.onopen = function() {
+      console.log("WebSocket connection established.");
+    };
 
-      const contentDiv = document.createElement('div');
-      contentDiv.classList.add('marquee-item-content');
+    socket.onmessage = function(event) {
+      console.log("Message received from server:", event.data);
+      const newMessage = JSON.parse(event.data);
+      updateMarquee([newMessage]); // Add the new message to the marquee
+    };
 
-      const guestName = document.createElement('h2');
-      guestName.textContent = `From: ${msg.guest_name}`;
+    socket.onclose = function() {
+      console.log("WebSocket connection closed.");
+    };
 
-      const messageContent = document.createElement('p');
-      messageContent.textContent = msg.content;
-
-      contentDiv.appendChild(guestName);
-      contentDiv.appendChild(messageContent);
-
-      card.appendChild(imgElement);
-      card.appendChild(contentDiv);
-
-      return card;
-    }
-
-    {% comment %} function duplicateMarqueeContent() {
-      const marqueeTrack = document.getElementById('marquee-track');
-      const items = Array.from(marqueeTrack.children);
-
-      if (items.length > 0) {
-        // Duplicate only if necessary
-        items.forEach((item) => {
-          const clone = item.cloneNode(true);
-          marqueeTrack.appendChild(clone);
-        });
-      }
-    } {% endcomment %}
-
-    // Continuous fetch and update
-    setInterval(fetchMessages, 9000); // Fetch every 5 minutes
-
-    // Initial fetch
-    fetchMessages();
+    // Initialize by fetching current data
+    fetchInitialData();
   </script>
 </body>
 </html>

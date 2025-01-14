@@ -30,6 +30,7 @@
       <button
         type="submit"
         form="guestMessageForm"
+        id="submitBtn"
         class="bg-slate-400 p-1"
         onclick="submitMessage(event)"
       >
@@ -50,6 +51,7 @@
           name="guest_name"
           placeholder="Enter your name"
           class="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          required
         >
       </div>
       
@@ -62,6 +64,7 @@
           rows="4"
           placeholder="Write your comment..."
           class="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          required
         ></textarea>
       </div>
       
@@ -105,6 +108,10 @@
     function submitMessage(event) {
       event.preventDefault();
 
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true; // Disable the button to prevent multiple submissions
+      submitBtn.textContent = 'Submitting...'; // Change button text
+
       // Get form data
       const formData = new FormData(document.getElementById('guestMessageForm'));
 
@@ -118,40 +125,21 @@
         if (data.success) {
           // Clear the form after successful submission
           document.getElementById('guestMessageForm').reset();
+          document.getElementById('imagePreview').classList.add('hidden');
+        } else {
+          alert('Error submitting message');
         }
       })
       .catch(error => {
         console.error('Error:', error);
+        alert('An error occurred while submitting your message');
+      })
+      .finally(() => {
+        submitBtn.disabled = false; // Re-enable the button
+        submitBtn.textContent = 'Submit'; // Reset button text
       });
     }
   </script>
 
-  <script>
-    const socket = new WebSocket('ws://' + window.location.hostname + '/ws/messages/{{ client.client_url }}/');
-
-    socket.onmessage = function(e) {
-      const data = JSON.parse(e.data);
-      const message = data.message;
-
-      // Add the new message to the message board
-      const messageBoard = document.getElementById('message-board');
-      const newMessageElement = document.createElement('div');
-      newMessageElement.classList.add('message');
-      newMessageElement.textContent = message;
-      messageBoard.appendChild(newMessageElement);
-    };
-
-    socket.onopen = function() {
-      console.log('Connected to WebSocket server');
-    };
-
-    socket.onerror = function(error) {
-      console.error('WebSocket Error:', error);
-    };
-
-    socket.onclose = function() {
-      console.log('WebSocket connection closed');
-    };
-  </script>
 </body>
 </html>
