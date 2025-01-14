@@ -7,83 +7,66 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* Marquee Effect */
-    .marquee-container {
-      overflow: hidden;
-      white-space: nowrap;
-      position: relative;
-      width: 100%;
-      margin-bottom: 2rem;
-    }
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  width: 100%;
+  margin-bottom: 2rem;
+}
 
-    .marquee-track {
-      display: flex;
-      animation: marquee 60s linear infinite;
-      width: auto;
-    }
+.marquee-track {
+  display: flex;
+  animation: marquee 60s linear infinite;
+  width: auto;
+}
 
-    .marquee-item {
-      background: #fff;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      flex: 0 0 auto;
-      max-width: 300px;
-      margin: 0 1rem;
-      padding: 1rem;
-    }
+.marquee-item {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  flex: 0 0 auto;
+  max-width: 450px;
+  margin: 0 1rem;
+  padding: 1rem;
+  height: fit-content;
+}
 
-    .marquee-item img {
-      width: 100%;
-      height: auto;
-      border-bottom: 2px solid #ddd;
-    }
+.marquee-item-content {
+  padding: 0.5rem;
+}
 
-    .marquee-item-content {
-      padding: 1rem;
-    }
+.marquee-item-content h2 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
 
-    .marquee-item-content h2 {
-      font-size: 1rem;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
+.marquee-item-content p {
+  font-size: 0.875rem;
+  color: #555;
+  word-wrap: break-word;
+  margin-bottom: 0.5rem; /* Ensures there’s space below the text */
+  max-width: 100%; /* Ensures it doesn't overflow */
+}
 
-    .marquee-item-content p {
-      font-size: 0.875rem;
-      color: #555;
-      word-wrap: break-word;
-    }
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
 
-    @keyframes marquee {
-      0% {
-        transform: translateX(100%);
-      }
-      100% {
-        transform: translateX(-100%);
-      }
-    }
 
-    /* Carousel Styling */
-    .carousel {
-      display: flex;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      gap: 1rem;
-    }
 
-    .carousel-item {
-      flex: 0 0 auto;
-      width: 300px;
-      background-color: white;
-      padding: 1rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
   </style>
 </head>
 <body class="bg-gray-100 p-6">
 
   <div class="container mx-auto">
-    <h1 class="mt-10 mb-20 text-3xl font-bold  text-center">ssss{{ client.client_name }}</h1>
+    <h1 class="mt-10 mb-20 text-3xl font-bold  text-center">{{ client.client_name }}</h1>
 
     <!-- Marquee Section -->
     <div class="marquee-container">
@@ -94,7 +77,6 @@
             <div class="marquee-item-content">
               <h2 class="text-lg font-semibold">
                 {{ message.guest_name }} 
-                <span class="text-gray-500">({{ message.client.name|default:"Unknown Client" }})</span>
               </h2>
               <p>{{ message.content }}</p>
               {% if message.image %}
@@ -115,7 +97,9 @@
 
   <script>
     // WebSocket connection
-    const socket = new WebSocket('ws://' + window.location.host + '/ws/message_board/');
+  const clientUrl = "{{ client.client_url }}"; // Assuming `client_url` is available in the template context
+  const socket = new WebSocket(`ws://${window.location.host}/ws/message_board/${clientUrl}/`);
+  
 
     socket.onopen = function () {
       console.log('WebSocket connected');

@@ -1,8 +1,6 @@
-# myapp/routing.py
-
-from django.urls import path
-from . consumers import MessageBoardConsumer
+from django.urls import re_path
+from .consumers import MessageBoardConsumer
 
 websocket_urlpatterns = [
-    path('ws/message_board/', MessageBoardConsumer.as_asgi()),
+    re_path(r'^ws/message_board/(?P<client_url>[\w-]+)/$', MessageBoardConsumer.as_asgi()),
 ]

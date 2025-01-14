@@ -27,23 +27,6 @@ def create(request):
             form = ClientForm
             return render(request, 'clients/client_form.html', { 'form': form}) 
 
-def create(request):
-    if request.method == "POST":
-        form = ClientForm(request.POST)
-        if form.is_valid():
-            # Save the new message
-            new_client_msg = form.save()
-
-            # Trigger sending the message to WebSocket after saving
-            new_client_msg.send_new_client_msg_to_websocket()
-
-            return redirect('clients')
-        else:
-            return render(request, 'clients/client_form.html', {'form': form})
-    else:
-        form = ClientForm()
-        return render(request, 'clients/client_form.html', {'form': form})
-        
 def msg_board(request, client_url):
     # Fetch the client with the given client_url
     client = get_object_or_404(Client, client_url=client_url)
@@ -60,47 +43,6 @@ def success_msg(request):
 
 def post_list(request):
     return render(request, 'clients/template.html')
-
-
-def get_client_msgs_json(request , client_url):
-    client = get_object_or_404(Client, client_url=client_url)
-    client_msgs = ClientMsg.objects.filter(client=client).order_by('-created_at')  # Fetch messages
-    
- # Serialize messages into a list of dictionaries including unique id
-    messages = [
-        {
-            'id': msg.id,  # Include unique ID for each message
-            'guest_name': msg.guest_name,
-            'content': msg.content,
-            'created_at': msg.created_at,
-            'image_url': msg.image.url if msg.image else None
-        }
-        for msg in client_msgs
-    ]
-
-    # Return messages as JSON
-    return JsonResponse({'messages': messages})
-
-def submit_client_msg(request):
-    if request.method == "POST":
-        guest_name = request.POST.get('guest_name')
-        client_id = request.POST.get('client_id')
-        content = request.POST.get('content')
-        
-        # Create a new ClientMsg instance
-        client_msg = ClientMsg.objects.create(
-            guest_name=guest_name,
-            client_id=client_id,
-            content=content
-        )
-
-        # Trigger the WebSocket message broadcasting after saving to the DB
-        send_new_client_msg_to_websocket(client_msg.id)
-
-        return JsonResponse({"success": True, "message": client_msg.content})
-    
-    return JsonResponse({"success": False}, status=400)
-
 
 
 
@@ -164,23 +106,24 @@ def send_new_client_msg_to_websocket(guest_msg):
         }
     )
 
+def message_board(request, client_url):
+    # Fetch the client based on the client_url
+    client = get_object_or_404(Client, client_url=client_url)
+    # messages = ClientMsg.objects.filter(client=client).select_related('client').order_by('-created_at')
+    messages = ClientMsg.objects.filter(client=client).order_by('-created_at')
+    return render(request, "clients/message_board.html", {"client": client, "messages": messages})
 
+def message_form(request, client_url):
+    # Fetch the client based on client_url
+    client = get_object_or_404(Client, client_url=client_url)
 
-def message_board(request):
-    messages = ClientMsg.objects.select_related('client').all().order_by('-created_at')
-
-    return render(request, "clients/message_board.html", {"messages": messages})
-
-
-def message_form(request):
     if request.method == "POST":
         guest_name = request.POST.get("guest_name")
-        client_id = request.POST.get("client")
         content = request.POST.get("content")
         image = request.FILES.get("image")
 
-        if guest_name and client_id and content:
-            client = Client.objects.get(pk=client_id)
+        if guest_name and content:
+            # Create a new message for the specific client
             message = ClientMsg.objects.create(
                 guest_name=guest_name,
                 client=client,
@@ -194,7 +137,7 @@ def message_form(request):
             channel_layer = get_channel_layer()
 
             async_to_sync(channel_layer.group_send)(
-                "message_board",
+                f"message_board_{client.client_url}",
                 {
                     "type": "new_message",
                     "message": {
@@ -209,5 +152,4 @@ def message_form(request):
 
             return JsonResponse({"status": "success"}, status=200)
 
-    clients = Client.objects.all()
-    return render(request, "clients/message_form.html", {"clients": clients})
+    return render(request, "clients/message_form.html", {"client": client})

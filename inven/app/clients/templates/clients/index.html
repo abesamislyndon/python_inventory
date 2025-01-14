@@ -71,7 +71,7 @@
                         <td class="">
                             <div class="flex items-center pl-5">
                                 <p class="text-sm font-medium leading-none text-gray-700 mr-2">{{client.client_name }}</p>
-                               <a href="{% url 'client_detail' client.client_url %}" target="_blank">
+                               <a href="{% url 'message_board' client.client_url %}" target="_blank">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
                                     fill="none">
                                     <path
@@ -102,7 +102,7 @@
                                         stroke-linecap="round" stroke-linejoin="round"></path>
                                 </svg>
                                 <p class="text-sm leading-none text-gray-600 ml-2">
-                                 <a href="{% url 'guest_message' client.client_url %}" target="_blank">form</a>
+                                 <a href="{% url 'submit_message' client.client_url %}" target="_blank">form</a>
                                 
                                 </p>
                             </div>

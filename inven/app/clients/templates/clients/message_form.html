@@ -17,7 +17,7 @@
                        class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
             </div>
 
-            <div>
+            {% comment %} <div>
                 <label for="client" class="block text-sm font-medium text-gray-700">Client</label>
                 <select name="client" id="client" required
                         class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
@@ -26,7 +26,7 @@
                     <option value="{{ client.id }}">{{ client.name }}</option>
                     {% endfor %}
                 </select>
-            </div>
+            </div> {% endcomment %}
 
             <div>
                 <label for="content" class="block text-sm font-medium text-gray-700">Message Content</label>
