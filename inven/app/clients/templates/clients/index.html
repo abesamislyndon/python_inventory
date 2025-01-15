@@ -20,31 +20,7 @@
         </div>
     </div>
     <div class="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
-        <div class="sm:flex items-center justify-between">
-            <div class="flex items-center">
-                <a class="rounded-full focus:outline-none focus:ring-2  focus:bg-indigo-50 focus:ring-indigo-800"
-                    href=" javascript:void(0)">
-                    <div class="py-2 px-8 bg-indigo-100 text-indigo-700 rounded-full">
-                        <p>All</p>
-                    </div>
-                </a>
-                <a class="rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8"
-                    href="javascript:void(0)">
-                    <div class="py-2 px-8 text-gray-600 hover:text-indigo-700 hover:bg-indigo-100 rounded-full ">
-                        <p>Done</p>
-                    </div>
-                </a>
-                <a class="rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8"
-                    href="javascript:void(0)">
-                    <div class="py-2 px-8 text-gray-600 hover:text-indigo-700 hover:bg-indigo-100 rounded-full ">
-                        <p>Pending</p>
-                    </div>
-                </a>
-            </div>
-            <a href = "{% url 'new' %}" class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
-                <p class="text-sm font-medium leading-none text-white">Add Client</p>
-            </a>
-        </div>
+   
         <div class="mt-7 overflow-x-auto">
             <table class="w-full whitespace-nowrap">
                 <tbody>
@@ -102,20 +78,16 @@
                                         stroke-linecap="round" stroke-linejoin="round"></path>
                                 </svg>
                                 <p class="text-sm leading-none text-gray-600 ml-2">
-                                 <a href="{% url 'submit_message' client.client_url %}" target="_blank">form</a>
+                                 <a href="{% url 'submit_message' client.client_url %}" target="_blank">Guest Form</a>
                                 
                                 </p>
                             </div>
                         </td>
                   
-                        <td class="pl-5">
-                            <button
-                                class="py-3 px-3 text-sm focus:outline-none leading-none text-red-700 bg-red-100 rounded">Due
-                                today at 18:00</button>
-                        </td>
+            
                         <td class="pl-4">
-                            <button
-                                class="focus:ring-2 focus:ring-offset-2 focus:ring-red-300 text-sm leading-none text-gray-600 py-3 px-5 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none">View</button>
+                            <a href="{% url 'message_board' client.client_url %}" target="_blank"
+                                class="focus:ring-2 focus:ring-offset-2 focus:ring-red-300 text-sm leading-none text-gray-600 py-3 px-5 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none">View Message Board</a>
                         </td>
                         <td>
                             <div class="relative px-5 pt-2">
