@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ client.client_name }}</title>
+  <title>{{ client.event_name }}</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* Marquee Effect */
@@ -65,7 +65,7 @@
 <body class="bg-gray-100 p-6">
 
   <div class="container mx-auto">
-    <h1 class="mt-10 mb-20 text-3xl font-bold  text-center">{{ client.client_name }}</h1>
+    <h1 class="mt-10 mb-20 text-3xl font-bold  text-center">{{ client.event_name }}</h1>
     <!-- Marquee Section -->
     <div class="marquee-container ">
       <div id="marquee-track" class="marquee-track">
@@ -78,7 +78,7 @@
               </h1>
               <p class="text-slate-600 leading-normal font-light mt-3 mb-10">{{ message.content }}</p>
               {% if message.image %}
-                <img src="http://localhost:8000/clients{{ message.image.url }}" alt="Message Image" class="mt-2 rounded shadow">
+                <img src="http://localhost:8000/events{{ message.image.url }}" alt="Message Image" class="mt-2 rounded shadow">
               {% endif %}
               <small class="text-gray-500">{{ message.created_at }}</small>
             </div>
@@ -114,7 +114,7 @@
           <div class="marquee-item-content">
             <h2 class="text-2xl font-semibold">${data.message.guest_name}</h2>
             <p>${data.message.content}</p>
-             ${data.message.image_url ? `<img src="http://localhost:8000/clients${ data.message.image_url }" alt="Message Image"
+             ${data.message.image_url ? `<img src="http://localhost:8000/events${ data.message.image_url }" alt="Message Image"
               class="mt-2 rounded shadow">` : ""}
             <small class="text-gray-500">${data.message.created_at}</small>
           </div>

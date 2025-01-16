@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', views.clients_index, name = "clients"),
+    path('', views.events_index, name = "events"),
     path('new', views.client_form, name = "new"),
     path('create', views.create, name='create'),
     path('message_board/<str:client_url>/', views.message_board, name='message_board'),

@@ -3,11 +3,15 @@
 from django.db import models
 
 class Client(models.Model):
-    client_name = models.CharField(max_length=100)
+    event_name = models.CharField(max_length=100)  # Renamed from client_name
     guest_count = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    client_url = models.CharField(null=True, blank=True)
+    client_url = models.CharField(max_length=255, null=True, blank=True)
+    event_date = models.DateTimeField(null=True, blank=True)
+    event_type = models.CharField(max_length=100, null=True, blank=True)
+
+
     
 
     

@@ -7,7 +7,7 @@ from channels.layers import get_channel_layer
 
 
 # CLIENT LIST
-def clients_index(request):
+def events_index(request):
     client_list = { 'client_list': Client.objects.all() }
     return render(request, 'clients/index.html', client_list)
 
