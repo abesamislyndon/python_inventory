@@ -5,7 +5,6 @@ from django.http import JsonResponse
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
-
 # CLIENT LIST
 def events_index(request):
     client_list = { 'client_list': Client.objects.all() }
@@ -69,7 +68,7 @@ def message_form(request, client_url):
                     "type": "new_message",
                     "message": {
                         "guest_name": message.guest_name,
-                        "client_name": message.client.client_name,
+                        "event_name": message.client.event_name,
                         "content": message.content,
                         "image_url": message.image.url if message.image else "",
                         "created_at": message.created_at.strftime("%Y-%m-%d %H:%M:%S"),
@@ -81,3 +80,8 @@ def message_form(request, client_url):
             return render(request, "clients/success_msg.html", {"client": client})
 
     return render(request, "clients/message_form.html", {"client": client})
+
+
+def event_settings(request, client_url):
+    client = get_object_or_404(Client, client_url=client_url)
+    return render(request, 'clients/event_settings.html', {"client": client})

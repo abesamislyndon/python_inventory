@@ -78,7 +78,6 @@
             photoCanvas.toBlob((blob) => {
                 // Create a new File object
                 const file = new File([blob], "captured-photo.png", { type: "image/png" });
-
                 // Update the hidden file input
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(file);
@@ -90,6 +89,6 @@
                 photoPreview.classList.remove('hidden');
             }, 'image/png');
         });
-    </script>
+    </script><!-- end of this script -->
 </body>
 </html>

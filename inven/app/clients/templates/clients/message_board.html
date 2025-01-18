@@ -30,7 +30,7 @@
 .marquee-item-content {
    
    padding: 0.5rem;
-   width: 650px;
+   width: 450px;
    height: auto;
 }
 
@@ -93,50 +93,45 @@
     </div> {% endcomment %}
   </div>
 
-  <script>
+<script>
     // WebSocket connection
-  const clientUrl = "{{ client.client_url }}"; // Assuming `client_url` is available in the template context
-  const socket = new WebSocket(`ws://${window.location.host}/ws/message_board/${clientUrl}/`);
-  
+      const clientUrl = "{{ client.client_url }}"; // Assuming `client_url` is available in the template context
+      const socket = new WebSocket(`ws://${window.location.host}/ws/message_board/${clientUrl}/`);
+      
 
-    socket.onopen = function () {
-      console.log('WebSocket connected');
-    };
+        socket.onopen = function () {
+          console.log('WebSocket connected');
+        };
 
-    socket.onmessage = function (e) {
-      const data = JSON.parse(e.data);
+        socket.onmessage = function (e) {
+          const data = JSON.parse(e.data);
 
-      // Insert new message into carousel
+          // Insert new message into carousel
 
-      // Insert new message into marquee
-      const newMarqueeMessage = `
-        <div class="marquee-item">
-          <div class="marquee-item-content">
-            <h2 class="text-2xl font-semibold">${data.message.guest_name}</h2>
-            <p>${data.message.content}</p>
-             ${data.message.image_url ? `<img src="http://localhost:8000/events${ data.message.image_url }" alt="Message Image"
-              class="mt-2 rounded shadow">` : ""}
-            <small class="text-gray-500">${data.message.created_at}</small>
-          </div>
-        </div>
-      `;
-      const marqueeTrack = document.getElementById('marquee-track');
-      marqueeTrack.insertAdjacentHTML('beforeend', newMarqueeMessage);
+          // Insert new message into marquee
+          const newMarqueeMessage = `
+            <div class="marquee-item">
+              <div class="marquee-item-content">
+                <h2 class="text-2xl font-semibold">${data.message.guest_name}</h2>
+                <p>${data.message.content}</p>
+                ${data.message.image_url ? `<img src="http://localhost:8000/events${ data.message.image_url }" alt="Message Image"
+                  class="mt-2 rounded shadow">` : ""}
+                <small class="text-gray-500">${data.message.created_at}</small>
+              </div>
+            </div>
+          `;
+          const marqueeTrack = document.getElementById('marquee-track');
+          marqueeTrack.insertAdjacentHTML('beforeend', newMarqueeMessage);
 
-      // Adjust track width to fit new messages
-      const marqueeItems = document.querySelectorAll('.marquee-item');
-      const trackWidth = marqueeItems.length * 300; // Assuming each item has width of 300px
-      marqueeTrack.style.width = `${trackWidth}px`;
+          // Adjust track width to fit new messages
+          const marqueeItems = document.querySelectorAll('.marquee-item');
+          const trackWidth = marqueeItems.length * 300; // Assuming each item has width of 300px
+          marqueeTrack.style.width = `${trackWidth}px`;
+        };
 
-      // Restart animation after adding new message
-      //marqueeTrack.style.animation = 'none';  // Reset animation
-      //marqueeTrack.offsetHeight; // Trigger reflow to reset the animation
-      //marqueeTrack.style.animation = 'marquee 60s linear infinite'; // Reapply the animation
-    };
-
-    socket.onclose = function () {
-      console.log('WebSocket disconnected');
-    };
+        socket.onclose = function () {
+          console.log('WebSocket disconnected');
+        };
   </script>
 </body>
 </html>

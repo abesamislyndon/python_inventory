@@ -1,0 +1,50 @@
+{% extends 'with_sidebar_base.html' %}
+{% block content %}
+  <div class="items-center bg-white min-h-screen dark:bg-white">
+    <div class="container p-10">
+      <span class="text-2xl font-semibold">Event Name: {{ client.event_name }}</span>
+    </div>
+    <div class="w-full max-w-3xl p-6 bg-white shadow-md rounded-lg">
+      <!-- Tabs Header -->
+      <div class="border-b border-gray-200">
+        <nav class="flex space-x-4" aria-label="Tabs">
+          <button class="tab-button px-4 py-2 text-sm font-medium text-gray-600 hover:text-indigo-600 hover:border-indigo-600 border-b-2 border-transparent focus:outline-none active-tab" onclick="showTab('general')">General</button>
+          <button class="tab-button px-4 py-2 text-sm font-medium text-gray-600 hover:text-indigo-600 hover:border-indigo-600 border-b-2 border-transparent focus:outline-none" onclick="showTab('appearance')">Appearance</button>
+          <button class="tab-button px-4 py-2 text-sm font-medium text-gray-600 hover:text-indigo-600 hover:border-indigo-600 border-b-2 border-transparent focus:outline-none" onclick="showTab('moderation')">Moderation</button>
+        </nav>
+      </div>
+
+      <!-- Tabs Content -->
+      <div class="mt-6">
+        <!-- General Tab -->
+        <div id="general" class="tab-content">
+          {% include 'clients/tabs/general.html' %}
+        </div>
+
+        <!-- Appearance Tab -->
+        <div id="appearance" class="tab-content hidden">
+          {% include 'clients/tabs/appearance.html' %}
+        </div>
+
+        <!-- Moderation Tab -->
+        <div id="moderation" class="tab-content hidden">
+          {% include 'clients/tabs/moderation.html' %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Script -->
+    <script>
+      function showTab(tabId) {
+        // Hide all tab content
+        document.querySelectorAll('.tab-content').forEach((content) => content.classList.add('hidden'))
+        // Remove active styles from all tab buttons
+        document.querySelectorAll('.tab-button').forEach((button) => button.classList.remove('active-tab', 'text-indigo-600', 'border-indigo-600'))     
+        // Show the selected tab content
+        document.getElementById(tabId).classList.remove('hidden')
+        // Add active styles to the clicked tab button
+        event.target.classList.add('active-tab', 'text-indigo-600', 'border-indigo-600')
+      }
+    </script>
+  </div>
+{% endblock %}
