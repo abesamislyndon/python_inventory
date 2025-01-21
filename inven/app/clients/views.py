@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Client, ClientMsg
 from .forms import ClientForm
 from .forms import MessageBoardForm
+from inven.utils import dynamic_url, generate_qrcode
 
 # CLIENT LIST
 def events_index(request):
@@ -81,6 +82,10 @@ def message_form(request, client_url):
 
 def event_settings(request, client_url):
     client = get_object_or_404(Client, client_url=client_url)
+    full_url_form = dynamic_url(request, 'submit_message', client_url)
+    full_url_photo_wall = dynamic_url(request, 'message_board', client_url)
+    qr_code_forms = generate_qrcode(full_url_form)
+    qr_code_wall = generate_qrcode(full_url_photo_wall)
 
     if request.method == "POST":
         form = MessageBoardForm(request.POST, request.FILES, instance=client)
@@ -92,4 +97,4 @@ def event_settings(request, client_url):
     else:
         form = MessageBoardForm(instance=client)
 
-    return render(request, "clients/event_settings.html", {"form": form, "client": client})
+    return render(request, "clients/event_settings.html", {"form": form, "client": client, "full_url": full_url_form, "full_url_wall":full_url_photo_wall, "qr_image": qr_code_forms, "qr_image_wall": qr_code_wall})

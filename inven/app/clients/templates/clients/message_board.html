@@ -71,7 +71,7 @@
       <div id="marquee-track" class="marquee-track">
         <!-- Marquee items will be inserted here dynamically -->
         {% for message in messages %}
-          <div class="marquee-item">
+          <div class="marquee-item bg-[{{client.theme_settings.card_color}}]">
             <div class=" marquee-item-content">
               <h1 class="text-2xl font-semibold">
                From: {{ message.guest_name }} 

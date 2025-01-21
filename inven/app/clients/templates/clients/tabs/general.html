@@ -1,2 +1,64 @@
-<h2 class="text-xl font-bold text-gray-800">General Settings from tabs</h2>
-<p>List of all </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <!-- First Section: Digital Guest Form -->
+  <div class="p-5 bg-[#f0f0ff] text-sm">
+    <h3 class="text-lg my-4">Your Digital Guest Form</h3>
+    <p>The digital album lets your guests upload new photos or view existing ones. Share it with your guests via a direct link or using its unique QR code (print it or display it digitally).</p>
+    <img src="data:image/png;base64,{{ qr_image }}" alt="QR Code" class="w-1/2 mx-auto my-4" />
+    <div class="container mx-auto p-4">
+      <div class="relative">
+        <input type="text" class="w-full border border-gray-300 p-4" id="full-url-input" value="{{ full_url }}" readonly />
+        <button class="absolute text-[0.7em] right-2 top-2 px-4 py-2 bg-[#5454ce] text-white rounded hover:bg-[#4b4bc3]" onclick="copyToClipboard('full-url-input')">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second Section: Photo Message Wall -->
+  <div class="p-5 bg-[#f0f0ff] text-sm">
+    <h3 class="text-lg my-4">Your Photo - Message Wall</h3>
+    <p>Every upload to your digital album automatically appears on your Photo Wall. Connect it to video projectors, TVs, or anywhere your guests can easily find it.</p>
+    <img src="data:image/png;base64,{{ qr_image_wall }}" alt="QR Code" class="w-1/2 mx-auto my-4" />
+    <div class="container mx-auto p-4">
+      <div class="relative">
+        <input type="text" class="w-full border border-gray-300 p-4" id="full-url-input-wall" value="{{ full_url_wall }}" readonly />
+        <button class="absolute text-[0.7em] right-2 top-2 px-4 py-2 bg-[#5454ce] text-white rounded hover:bg-[#4b4bc3]" onclick="copyToClipboard('full-url-input-wall')">Copy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function copyToClipboard(inputId) {
+    // Get the input field based on the passed ID
+    const inputField = document.getElementById(inputId);
+
+    // Select and copy the text
+    inputField.select();
+    inputField.setSelectionRange(0, 99999); // For mobile devices
+
+    navigator.clipboard
+      .writeText(inputField.value)
+      .then(() => {
+        // Show a SweetAlert2 success message
+        Swal.fire({
+          icon: 'success',
+          title: 'Copied!',
+          text: 'The URL has been copied to your clipboard.',
+          timer: 2000,
+          showConfirmButton: false,
+          toast: true,
+          position: 'top-end'
+        });
+      })
+      .catch((err) => {
+        // Show a SweetAlert2 error message
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to copy the URL.'
+        });
+        console.error('Failed to copy: ', err);
+      });
+  }
+</script>
