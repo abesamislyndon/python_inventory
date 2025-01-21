@@ -1,4 +1,5 @@
 # models.py
+from django.contrib.auth.models import User
 from django.db import models
 
 # Event model
@@ -13,16 +14,18 @@ class Client(models.Model):
     event_logo = models.ImageField(upload_to='event_logos/', blank=True, null=True)
     # theme_settings = models.JSONField(default=dict) 
     theme_settings = models.JSONField(default=dict, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='clients',  blank=True, null=True)
     
 #Event Message
 class ClientMsg(models.Model):
+
     guest_name = models.CharField(max_length=100)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)  # Corrected field name
     content = models.TextField()
     image = models.ImageField(upload_to='guest_messages/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
     def __str__(self):
         return f"{self.guest_name}: {self.content[:50]}"
 

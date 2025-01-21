@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_URL = '/media/'  # URL to access media files
@@ -39,8 +40,21 @@ INSTALLED_APPS = [
     'app.accounts',
     'app.dashboards',
     'app.clients',
- 
+       
+    'django.contrib.sites',  # Required for allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',  # Include Google provider
 ]
+
+SITE_ID = 1
+
+SOCIALACCOUNT_PROVIDERS = {
+  'google': {
+      'EMAIL_AUTHENTICATION': True
+  }
+}
 
 
 
@@ -52,7 +66,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'app.accounts.middleware.RoleRequiredMiddleware',
+    # 'app.accounts.middleware.RoleRequiredMiddleware',
+    'allauth.account.middleware.AccountMiddleware',  # Add this line
     # "django_browser_reload.middleware.BrowserReloadMiddleware"
 ]
 ROOT_URLCONF = 'inven.urls'
@@ -105,6 +120,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 LANGUAGE_CODE = 'en-us'
@@ -121,8 +139,7 @@ COMPRESS_ROOT = BASE_DIR / 'static'
 COMPRESS_ENABLED = True
 STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
 LOGIN_REDIRECT_URL = '/dashboards/'  # Redirect after successful login
-LOGOUT_REDIRECT_URL = '' 
-
+LOGOUT_REDIRECT_URL = '/' 
 
 
 APPEND_SLASH = False
@@ -138,6 +155,8 @@ ASGI_APPLICATION = 'inven.asgi.application'
 
 
 
+
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -146,3 +165,6 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+
+

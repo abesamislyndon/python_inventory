@@ -6,7 +6,9 @@ from inven.utils import dynamic_url, generate_qrcode
 
 # CLIENT LIST
 def events_index(request):
-    client_list = { 'client_list': Client.objects.all() }
+
+    Events =  Client.objects.filter(user=request.user)
+    client_list = { 'client_list': Events.all() }
     return render(request, 'clients/index.html', client_list)
 
 # CLIENT CRUD - READ

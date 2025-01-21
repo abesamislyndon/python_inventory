@@ -11,6 +11,7 @@ class RoleRequiredMiddleware:
         excluded_paths = [
             reverse('login'),  # Login page
             reverse('logout'),  # Logout page
+            # reverse('socialaccount_login', kwargs={'provider': 'google'}),  
             # reverse('password_reset'),  # Password reset page (if applicable)
         ]
         # Allow static files (useful during development)

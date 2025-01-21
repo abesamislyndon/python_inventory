@@ -8,6 +8,7 @@ urlpatterns = [
      path('', include('app.accounts.urls')),  
      path('dashboards/', include('app.dashboards.urls')), 
      path('events/', include('app.clients.urls')),
+   
      #   path('dashboard/', views.admin_dashboard, {'required_role': 'Admin'}, name='admin_dashboard'),
 ]
 
