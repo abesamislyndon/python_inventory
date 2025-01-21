@@ -2,25 +2,27 @@
 {% block title %}Login{% endblock %}
 {% block content %}
 <!-- login component -->
-<div class="flex items-center justify-center min-h-screen bg-[#5141ff]">
+<div class="flex items-center justify-center min-h-screen bg-[#f7f6ff]">
     <div class="bg-white mx-auto shadow-lg rounded-md flex w-full max-w-4xl overflow-hidden border border-gray-200">
         <!-- Banner Section -->
-        <div class="hidden md:flex flex-1 bg-[#fff] text-[#5141ff]] items-center justify-center p-8">
+        <div class="hidden md:flex flex-1 custom-bg  items-center justify-center p-8">
             <div class="text-center">
-                <h2 class="text-3xl font-bold">POSTLY</h2>
-                <p class="mt-4">Your journey starts here.</p>
+                <h2 class="text-3xl font-bold text-[#fff]">TAPOK</h2>
+                <p class="mt-1 text-[#aba0ff] text-sm">Your journey starts here.</p>
+                  
             </div>
+             <span class=" text-[#aba0ff] text-[0.5em] absolute mt-52">© All rights reserved Tapok PH</span>
         </div>
         <!-- Login Section -->
-        <div class="flex-1 p-8 bg-slate-100">
-            <div class="flex flex-col items-center">
-                <h2 class="text-md font-bold mb-6">Log In</h2>
+        <div class="flex-1 p-8 bg-[#eeeefb]">
+            <div class="flex flex-col items-start">
+                <h2 class="text-md font-bold mb-2">Sign In</h2>
             </div>
             <!-- Flash Messages Section -->
             {% if messages %}
-            <div class="mb-4">
+            <div class="mb-4 mt-2">
                 {% for message in messages %}
-                <div class="absolute  flex items-center justify-center pt-4 -mt-8 mb-4 text-sm text-red-500 text-center rounded-md {{ 
+                <div class="absolute  flex items-center justify-center pt-4 -mt-8 mb-4 text-[0.76em] text-red-500 text-center rounded-md {{ 
         'bg-red-500' if message.tags == 'error' else 'bg-green-500' }}" role="alert">
                     {{ message }}
                 </div>
@@ -43,7 +45,7 @@
                 </div>
                 <div class="text-right">
                     <button name="button" type="submit"
-                        class="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="px-6 py-2 text-white bg-[#4935db] rounded-md hover:bg-[#3220b3] focus:outline-none focus:ring-2 focus:ring-blue-500">
                         Log in
                     </button>
                 </div>

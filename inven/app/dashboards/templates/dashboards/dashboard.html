@@ -3,25 +3,40 @@
 
 <div class=" items-center  bg-white min-h-screen ">
     <div class=" px-1 ">
-        <div class="grid gap-7 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 p-10">
+        <div class="grid gap-7 grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 p-10">
             <div class="p-5 bg-white border rounded shadow-sm">
-                <div class="text-base text-gray-950">Total Clients</div>
+                <div class="text-base text-gray-950">Total Events</div>
                 <div class="flex items-center pt-1">
-                    <div class="text-2xl font-bold text-gray-900 dark:text-gray-700">20</div>
-                    <span
+                    <div class="text-2xl font-bold text-gray-900 dark:text-gray-700">{{event_count}}</div>
+                    {% comment %} <span
                         class="flex items-center px-2 py-0.5 mx-2 text-sm rounded-full text-green-600 bg-green-100 dark:bg-green-900 dark:text-emerald-400">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M18 15L12 9L6 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round"></path>
                         </svg>
                         <span>1.8%</span>
-                    </span>
+                    </span> {% endcomment %}
                 </div>
             </div>
               <div class="p-5 bg-white border rounded shadow-sm">
-                <div class="text-base text-gray-950">Total Post Submitted</div>
+                <div class="text-base text-gray-950">Total Message Submitted</div>
                 <div class="flex items-center pt-1">
-                    <div class="text-2xl font-bold text-gray-900">7,520</div>
+                    <div class="text-2xl font-bold text-gray-900">{{msg_count}}</div>
+                    {% comment %} <span
+                        class="flex items-center px-2 py-0.5 mx-2 text-sm rounded-full text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"></path>
+                        </svg>
+                        <span>2.5%</span>
+                    </span> {% endcomment %}
+                </div>
+            </div>
+             
+              <div class="p-5 bg-white border rounded shadow-sm">
+                <div class="text-base text-gray-950">Total Events Today</div>
+                <div class="flex items-center pt-1">
+                    <div class="text-2xl font-bold text-gray-900">{{event_count_today}}</div>
                     <span
                         class="flex items-center px-2 py-0.5 mx-2 text-sm rounded-full text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,34 +44,6 @@
                                 stroke-linejoin="round"></path>
                         </svg>
                         <span>2.5%</span>
-                    </span>
-                </div>
-            </div>
-                <div class="p-5 bg-white rounded shadow-sm">
-                <div class="text-base text-gray-950">Total Events Created</div>
-                <div class="flex items-center pt-1">
-                    <div class="text-2xl font-bold text-gray-900">1375</div>
-                    <span
-                        class="flex items-center px-2 py-0.5 mx-2 text-sm rounded-full text-green-600 bg-green-100 dark:bg-green-900 dark:text-emerald-400">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18 15L12 9L6 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"></path>
-                        </svg>
-                        <span>5.2%</span>
-                    </span>
-                </div>
-            </div>
-                <div class="p-5 bg-white rounded shadow-sm">
-                <div class="text-base text-gray-950">Total Events Today</div>
-                <div class="flex items-center pt-1">
-                    <div class="text-2xl font-bold text-gray-900">5</div>
-                    <span
-                        class="flex items-center px-2 py-0.5 mx-2 text-sm rounded-full text-green-600 bg-green-100 dark:bg-green-900 dark:text-emerald-400">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18 15L12 9L6 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"></path>
-                        </svg>
-                        <span>2.2%</span>
                     </span>
                 </div>
             </div>
@@ -77,10 +64,10 @@
                     <div>
                         <h6
                             class="block font-sans text-base font-semibold leading-relaxed tracking-normal text-blue-gray-900 antialiased">
-                            Sales
+                            Events
                         </h6>
                         <p class="block max-w-sm font-sans text-sm font-normal leading-normal text-gray-700 antialiased">
-                            Sales Report
+                            Message Count Report
                         </p>
                     </div>
                 </div>
