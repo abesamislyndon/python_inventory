@@ -40,9 +40,6 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 
-
-
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -51,7 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'app.accounts.middleware.RoleRequiredMiddleware',
+    'app.accounts.middleware.RoleRequiredMiddleware',
     'allauth.account.middleware.AccountMiddleware',  # Add this line
     # "django_browser_reload.middleware.BrowserReloadMiddleware"
 ]
