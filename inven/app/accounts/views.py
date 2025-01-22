@@ -24,3 +24,7 @@ def custom_logout(request):
     response['Expires'] = '0'
     
     return response
+
+def direct_google_login(request):
+    # Redirect to the Google login URL provided by Django Allauth
+    return redirect('/accounts/google/login/')

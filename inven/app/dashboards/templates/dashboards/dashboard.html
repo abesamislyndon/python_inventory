@@ -1,171 +1,147 @@
 {% extends 'with_sidebar_base.html' %}
 {% block content %}
+  <div class="items-center bg-white min-h-screen">
+    <div class="px-1">
+      <div class="grid gap-7 grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 p-10">
+        <div class="p-5 bg-white border rounded shadow-sm">
+          <div class="text-base text-gray-950">Total Events</div>
+          <div class="flex items-center pt-1">
+            <div class="text-2xl font-bold text-gray-900 dark:text-gray-700">{{ event_count }}</div>
+            {% comment %} <span class="flex items-center px-2 py-0.5 mx-2 text-sm rounded-full text-green-600 bg-green-100 dark:bg-green-900 dark:text-emerald-400">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 15L12 9L6 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <span>1.8%</span>
+            </span> {% endcomment %}
+          </div>
+        </div>
+        <div class="p-5 bg-white border rounded shadow-sm">
+          <div class="text-base text-gray-950">Total Message Submitted</div>
+          <div class="flex items-center pt-1">
+            <div class="text-2xl font-bold text-gray-900">{{ msg_count }}</div>
+            {% comment %} <span class="flex items-center px-2 py-0.5 mx-2 text-sm rounded-full text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <span>2.5%</span>
+            </span> {% endcomment %}
+          </div>
+        </div>
 
-<div class=" items-center  bg-white min-h-screen ">
-    <div class=" px-1 ">
-        <div class="grid gap-7 grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 p-10">
-            <div class="p-5 bg-white border rounded shadow-sm">
-                <div class="text-base text-gray-950">Total Events</div>
-                <div class="flex items-center pt-1">
-                    <div class="text-2xl font-bold text-gray-900 dark:text-gray-700">{{event_count}}</div>
-                    {% comment %} <span
-                        class="flex items-center px-2 py-0.5 mx-2 text-sm rounded-full text-green-600 bg-green-100 dark:bg-green-900 dark:text-emerald-400">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18 15L12 9L6 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"></path>
-                        </svg>
-                        <span>1.8%</span>
-                    </span> {% endcomment %}
-                </div>
-            </div>
-              <div class="p-5 bg-white border rounded shadow-sm">
-                <div class="text-base text-gray-950">Total Message Submitted</div>
-                <div class="flex items-center pt-1">
-                    <div class="text-2xl font-bold text-gray-900">{{msg_count}}</div>
-                    {% comment %} <span
-                        class="flex items-center px-2 py-0.5 mx-2 text-sm rounded-full text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"></path>
-                        </svg>
-                        <span>2.5%</span>
-                    </span> {% endcomment %}
-                </div>
-            </div>
-             
-              <div class="p-5 bg-white border rounded shadow-sm">
-                <div class="text-base text-gray-950">Total Events Today</div>
-                <div class="flex items-center pt-1">
-                    <div class="text-2xl font-bold text-gray-900">{{event_count_today}}</div>
-                    <span
-                        class="flex items-center px-2 py-0.5 mx-2 text-sm rounded-full text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"></path>
-                        </svg>
-                        <span>2.5%</span>
-                    </span>
-                </div>
-            </div>
+        <div class="p-5 bg-white border rounded shadow-sm">
+          <div class="text-base text-gray-950">Total Events Today</div>
+          <div class="flex items-center pt-1">
+            <div class="text-2xl font-bold text-gray-900">{{ event_count_today }}</div>
+            {% comment %} <span class="flex items-center px-2 py-0.5 mx-2 text-sm rounded-full text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <span>2.5%</span>
+            </span> {% endcomment %}
+          </div>
         </div>
-        <!-- CHARTS -->
-        <div class="grid gap-7 sm:grid-cols-2 lg:grid-cols-2 pt-0 pl-10">
-            <div class="relative flex flex-col rounded-md bg-white bg-clip-border text-gray-700 shadow-md">
-                <div
-                    class="relative mx-4 mt-4 flex flex-col gap-4 overflow-hidden rounded-none bg-transparent bg-clip-border text-gray-700 shadow-none md:flex-row md:items-center">
-                    <div class="w-max rounded-lg bg-gray-900 p-5 text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" aria-hidden="true" class="h-6 w-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0l4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0l-5.571 3-5.571-3">
-                            </path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h6
-                            class="block font-sans text-base font-semibold leading-relaxed tracking-normal text-blue-gray-900 antialiased">
-                            Events
-                        </h6>
-                        <p class="block max-w-sm font-sans text-sm font-normal leading-normal text-gray-700 antialiased">
-                            Message Count Report
-                        </p>
-                    </div>
-                </div>
-                <div class="pt-6 px-2 pb-0">
-                    <div id="bar-chart"></div>
-                </div>
+      </div>
+      <!-- CHARTS -->
+      <div class="grid gap-7 sm:grid-cols-2 lg:grid-cols-2 pt-0 pl-10">
+        <div class="relative flex flex-col rounded-md bg-white bg-clip-border text-gray-700 shadow-md">
+          <div class="relative mx-4 mt-4 flex flex-col gap-4 overflow-hidden rounded-none bg-transparent bg-clip-border text-gray-700 shadow-none md:flex-row md:items-center">
+            <div class="w-max rounded-lg bg-gray-900 p-5 text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="h-6 w-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0l4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0l-5.571 3-5.571-3"></path>
+              </svg>
             </div>
+            <div>
+              <h6 class="block font-sans text-base font-semibold leading-relaxed tracking-normal text-blue-gray-900 antialiased">Events</h6>
+              <p class="block max-w-sm font-sans text-sm font-normal leading-normal text-gray-700 antialiased">Message Count Report</p>
+            </div>
+          </div>
+          <div class="pt-6 px-2 pb-0">
+            <div id="bar-chart"></div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script>
     const chartConfig = {
-        series: [{
-            name: "Sales",
-            data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
-        }, ],
-        chart: {
-            type: "bar",
-            height: 240,
-            toolbar: {
-                show: false,
-            },
+      series: [
+        {
+          name: 'Sales',
+          data: [50, 40, 300, 320, 500, 350, 200, 230, 500]
+        }
+      ],
+      chart: {
+        type: 'bar',
+        height: 240,
+        toolbar: {
+          show: false
+        }
+      },
+      title: {
+        show: ''
+      },
+      dataLabels: {
+        enabled: false
+      },
+      colors: ['#020617'],
+      plotOptions: {
+        bar: {
+          columnWidth: '40%',
+          borderRadius: 2
+        }
+      },
+      xaxis: {
+        axisTicks: {
+          show: false
         },
-        title: {
-            show: "",
+        axisBorder: {
+          show: false
         },
-        dataLabels: {
-            enabled: false,
+        labels: {
+          style: {
+            colors: '#616161',
+            fontSize: '12px',
+            fontFamily: 'inherit',
+            fontWeight: 400
+          }
         },
-        colors: ["#020617"],
-        plotOptions: {
-            bar: {
-                columnWidth: "40%",
-                borderRadius: 2,
-            },
-        },
+        categories: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: '#616161',
+            fontSize: '12px',
+            fontFamily: 'inherit',
+            fontWeight: 400
+          }
+        }
+      },
+      grid: {
+        show: true,
+        borderColor: '#dddddd',
+        strokeDashArray: 5,
         xaxis: {
-            axisTicks: {
-                show: false,
-            },
-            axisBorder: {
-                show: false,
-            },
-            labels: {
-                style: {
-                    colors: "#616161",
-                    fontSize: "12px",
-                    fontFamily: "inherit",
-                    fontWeight: 400,
-                },
-            },
-            categories: [
-                "Apr",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "Sep",
-                "Oct",
-                "Nov",
-                "Dec",
-            ],
+          lines: {
+            show: true
+          }
         },
-        yaxis: {
-            labels: {
-                style: {
-                    colors: "#616161",
-                    fontSize: "12px",
-                    fontFamily: "inherit",
-                    fontWeight: 400,
-                },
-            },
-        },
-        grid: {
-            show: true,
-            borderColor: "#dddddd",
-            strokeDashArray: 5,
-            xaxis: {
-                lines: {
-                    show: true,
-                },
-            },
-            padding: {
-                top: 5,
-                right: 20,
-            },
-        },
-        fill: {
-            opacity: 0.8,
-        },
-        tooltip: {
-            theme: "dark",
-        },
-    };
-
-    const chart = new ApexCharts(document.querySelector("#bar-chart"), chartConfig);
-
-    chart.render();
-</script>
+        padding: {
+          top: 5,
+          right: 20
+        }
+      },
+      fill: {
+        opacity: 0.8
+      },
+      tooltip: {
+        theme: 'dark'
+      }
+    }
+    
+    const chart = new ApexCharts(document.querySelector('#bar-chart'), chartConfig)
+    
+    chart.render()
+  </script>
 {% endblock %}

@@ -44,6 +44,7 @@ def message_board(request, client_url):
 def message_form(request, client_url):
     # Fetch the client based on client_url
     client = get_object_or_404(Client, client_url=client_url)
+    theme_settings = client.theme_settings
 
     if request.method == "POST":
         guest_name = request.POST.get("guest_name")
@@ -79,7 +80,7 @@ def message_form(request, client_url):
             )
             # return JsonResponse({"status": "success"}, status=200)
             return render(request, "clients/success_msg.html", {"client": client})
-    return render(request, "clients/message_form.html", {"client": client})
+    return render(request, "clients/message_form.html", {"client": client,  "theme_settings": theme_settings})
 
 
 def event_settings(request, client_url):

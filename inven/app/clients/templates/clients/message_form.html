@@ -6,21 +6,21 @@
     <title>Submit a Message</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen p-6">
-    <div class="max-w-2xl mx-auto bg-white shadow rounded p-6">
-        <h1 class="text-2xl font-bold mb-4">Submit a New Message</h1>
+<body class="bg-[{{client.theme_settings.theme_color}}] p-6">
+    <div class="max-w-2xl mx-auto bg-white shadow rounded p-6 mt-10">
+        <h1 class="text-2xl font-bold mb-4">Splash Your Message!</h1>
         <form method="POST" enctype="multipart/form-data" class="space-y-4" id="messageForm">
             {% csrf_token %}
             <div>
                 <label for="guest_name" class="block text-sm font-medium text-gray-700">Guest Name</label>
                 <input type="text" name="guest_name" id="guest_name" required
-                       class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                       class="mt-1 block w-full h-12 p-4 rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
             </div>
 
             <div>
                 <label for="content" class="block text-sm font-medium text-gray-700">Message</label>
                 <textarea name="content" id="content" rows="4" required
-                          class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                          class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-4"></textarea>
             </div>
 
             <div>
@@ -32,10 +32,14 @@
             <!-- Camera Section -->
             <div>
                 <label class="block text-sm font-medium text-gray-700">Take a Photo (optional)</label>
-                <video id="camera" class="mt-4 w-full rounded shadow-sm"></video>
-                <button type="button" id="captureButton"
+                <button type="button" id="showCameraButton"
                         class="mt-2 w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
                     Take Photo
+                </button>
+                <video id="camera" class="mt-4 w-full rounded shadow-sm hidden"></video>
+                <button type="button" id="captureButton"
+                        class="mt-2 w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 hidden">
+                    Capture Photo
                 </button>
                 <canvas id="photoCanvas" class="hidden"></canvas>
                 <img id="photoPreview" alt="Captured Photo" class="mt-4 rounded shadow-sm hidden">
@@ -51,21 +55,25 @@
 
     <script>
         const camera = document.getElementById('camera');
+        const showCameraButton = document.getElementById('showCameraButton');
         const captureButton = document.getElementById('captureButton');
         const photoCanvas = document.getElementById('photoCanvas');
         const photoPreview = document.getElementById('photoPreview');
         const capturedImageInput = document.getElementById('image');
-        const form = document.getElementById('messageForm');
 
-        // Access the camera
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then((stream) => {
-                camera.srcObject = stream;
-                camera.play();
-            })
-            .catch((err) => {
-                console.error("Error accessing the camera:", err);
-            });
+        // Show the camera preview when "Take Photo" is clicked
+        showCameraButton.addEventListener('click', () => {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((stream) => {
+                    camera.srcObject = stream;
+                    camera.play();
+                    camera.classList.remove('hidden');
+                    captureButton.classList.remove('hidden');
+                })
+                .catch((err) => {
+                    console.error("Error accessing the camera:", err);
+                });
+        });
 
         // Capture photo
         captureButton.addEventListener('click', () => {
@@ -89,6 +97,6 @@
                 photoPreview.classList.remove('hidden');
             }, 'image/png');
         });
-    </script><!-- end of this script -->
+    </script>
 </body>
 </html>
