@@ -21,6 +21,9 @@ class RoleRequiredMiddleware:
             '/accounts/google/',  # General Google OAuth flow
             '/accounts/social/login/cancelled/',  # Cancelled login
             '/accounts/social/signup/',  # Social signup
+            '/events/message_board/',
+            '/events/media/guest_messages/',
+            '/ws/message_board/',
         ]
 
         if any(request.path.startswith(path) for path in allauth_paths):

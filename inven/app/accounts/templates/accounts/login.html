@@ -3,19 +3,19 @@
 {% block content %}
 {% load socialaccount %}
 <!-- login component -->
-<div class="flex items-center justify-center min-h-screen bg-[#f7f6ff]">
-    <div class="bg-white mx-auto shadow-lg rounded-md flex w-full max-w-4xl overflow-hidden border border-gray-200">
+<div class="flex items-center justify-center min-h-screen bg-[#f2efff]">
+    <div class="bg-white mx-auto shadow-lg rounded-md flex w-full max-w-4xl overflow-hidden  border border-[#b9afff]">
         <!-- Banner Section -->
         <div class="hidden md:flex flex-1 custom-bg  items-center justify-center p-8 min-h-0">
             <div class="text-center">
                 <h2 class="text-3xl font-bold text-[#fff]">TAPOK</h2>
-                <p class="mt-1 text-[#aba0ff] text-sm">Your journey starts here.</p>
+                <p class="mt-1 text-[#aba0ff] text-sm">Where Moments Become Memories</p>
                   
             </div>
              <span class=" text-[#aba0ff] text-[0.5em] absolute mt-52">© All rights reserved Tapok PH</span>
         </div>
         <!-- Login Section -->
-        <div class="flex-1 p-8 bg-[#eeeefb]">
+        <div class="flex-1 p-8 bg-[#fff] ">
             <div class="flex flex-col items-start">
                 <h2 class="text-md font-bold mb-2">Sign In</h2>
             </div>
@@ -24,8 +24,8 @@
             {% if messages %}
             <div class="mb-4 mt-2">
                 {% for message in messages %}
-                <div class="relative flex items-center justify-center pt-4 -mt-8 mb-4 text-[0.76em] text-red-500 text-center rounded-md {{ 
-                     'bg-red-500' if message.tags == 'error' else 'bg-green-500' }}" role="alert">
+                <div class="relative flex items-center justify-center pt-4 -mt-8 mb-4 text-[0.76em] text-center rounded-md {{ 
+                     'text-red-500 bg-red-100' if message.tags == 'error' else 'text-green-500 bg-green-100' }}" role="alert">
                     {{ message }}
                 </div>
 
@@ -51,14 +51,13 @@
                         Sign in
                     </button>
                   <span class="text-gray-500 text-sm ">or</span>
-<a href="/accounts/google/login/" 
-   class="w-full mt-3 px-6 py-2 text-[#3220b3] bg-[#fff] rounded-sm hover:bg-[#d8d4f4] focus:outline-none focus:ring-2 focus:ring-blue-500 text-center block border border-[#4935db] flex items-center justify-center gap-2">
-   <img src="{{ MEDIA_URL }}media/google-icon.6e369a9f55de51a66f35a38fc98a1b31.svg" 
-        alt="Google Logo" 
-        class="h-6 w-6">
-   Continue with Google
-</a>
-
+                        <a href="/accounts/google/login/" 
+                        class="w-full flex px-6 py-2 text-[#3220b3] bg-[#fff] rounded-sm hover:bg-[#d8d4f4] focus:outline-none focus:ring-2 focus:ring-blue-500 text-center  border border-[#4935db]  items-center justify-center gap-2">
+                        <img src="{{ MEDIA_URL }}media/google-icon.6e369a9f55de51a66f35a38fc98a1b31.svg" 
+                                alt="Google Logo" 
+                                class="h-6 w-6">
+                        Continue with Google
+                        </a>
                 </div>
             </form>
 

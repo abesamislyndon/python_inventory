@@ -159,8 +159,8 @@ CHANNEL_LAYERS = {
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "APP": {
-            "client_id": "1070009349094-btcqat26aao9c2qpenfftbt0arpc23o2.apps.googleusercontent.com",
-            "secret": "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",
+            "client_id": "",
+            "secret": "",
             "key": "",
         },
        'SCOPE': ['openid', 'profile', 'email'],

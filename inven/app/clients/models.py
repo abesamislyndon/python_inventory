@@ -8,7 +8,7 @@ class Client(models.Model):
     guest_count = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    client_url = models.CharField(max_length=255, null=True, blank=True)
+    client_url = models.CharField(max_length=255, unique=True, null=True, blank=True)
     event_date = models.DateTimeField(null=True, blank=True)
     event_type = models.CharField(max_length=100, null=True, blank=True)
     event_logo = models.ImageField(upload_to='event_logos/', blank=True, null=True)

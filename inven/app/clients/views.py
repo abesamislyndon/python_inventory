@@ -3,6 +3,8 @@ from .models import Client, ClientMsg
 from .forms import ClientForm
 from .forms import MessageBoardForm
 from inven.utils import dynamic_url, generate_qrcode
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # CLIENT LIST
 def events_index(request):
@@ -17,20 +19,51 @@ def client_form(request):
     return render(request, 'clients/client_form.html', {"form":form})
 
 #CLIENT CRUD - CREATE
-def create(request):
-    if request.method == "POST":
-        form = ClientForm(request.POST)
+@login_required
+def create_or_edit_client(request, client_id=None):
+    if client_id:
+        # If `client_id` is provided, fetch the existing Client for editing
+        client = get_object_or_404(Client, id=client_id, user=request.user)
+    else:
+        # Otherwise, create a new Client instance for creation
+        client = None
+
+    if request.method == 'POST':
+        # If it's a POST request, handle form submission
+        form = ClientForm(request.POST, request.FILES, instance=client)
         if form.is_valid():
-            form.save()
-            return redirect('clients')
-        else:
-            form = ClientForm
-            return render(request, 'clients/client_form.html', { 'form': form}) 
+            client = form.save(commit=False)
+            client.user = request.user  # Assign the current user to the client
+            client.save()
+            
+            # Add a success message for SweetAlert
+            if client_id:
+                messages.success(request, 'Event updated successfully!')
+            else:
+                messages.success(request, 'Event created successfully!')
+
+            return redirect(request.path)   # Redirect to the events page or another appropriate view
+    else:
+        # If it's a GET request, prefill the form with instance data (if editing)
+        form = ClientForm(instance=client)
+
+    # Render the form template
+    return render(request, 'clients/client_form.html', {'form': form, 'client': client})
+
+def delete_event(request, client_id):
+    try:
+        event = Client.objects.get(id=client_id)
+        event.delete()
+        messages.success(request, 'Event deleted successfully.')
+    except Client.DoesNotExist:
+        messages.error(request, 'Event not found.')
+
+    return redirect('events')  # Replace with your event list page URL
 
 # client success
 def success_msg(request, client_url):
     client = get_object_or_404(Client, client_url=client_url)
-    return render(request, 'clients/success_msg.html',{"client" : client})
+    return render(request, 'events/success_msg.html',{"client" : client})
 
 # SPECIFIC CLIENT MESSAGE BOARD
 def message_board(request, client_url):

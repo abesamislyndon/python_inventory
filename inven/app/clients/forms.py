@@ -7,9 +7,9 @@ class ClientForm(forms.ModelForm):
         model = Client
         fields = '__all__'
         widgets = {
-            'client_name': forms.TextInput(attrs={
+            'event_name': forms.TextInput(attrs={
                 'class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight',
-                'placeholder': 'Client Name',
+                'placeholder': 'Event Name',
             }),
             'guest_count': forms.TextInput(attrs={
                 'class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight',
