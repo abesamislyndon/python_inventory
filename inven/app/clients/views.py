@@ -69,9 +69,11 @@ def success_msg(request, client_url):
 def message_board(request, client_url):
     # Fetch the client based on the client_url
     client = get_object_or_404(Client, client_url=client_url)
+    full_url_photo_wall = dynamic_url(request, 'message_board', client_url)
+    qr_code_wall = generate_qrcode(full_url_photo_wall)
     theme_settings = client.theme_settings
     messages = ClientMsg.objects.filter(client=client).order_by('-created_at')
-    return render(request, "clients/message_board.html", {"client": client, "messages": messages, "theme_settings": theme_settings})
+    return render(request, "clients/message_board.html", {"client": client, "messages": messages, "theme_settings": theme_settings, "qr_image_wall": qr_code_wall})
 
 # GUEST FORMS FOR A SPECIC CLIENT
 def message_form(request, client_url):
@@ -92,8 +94,7 @@ def message_form(request, client_url):
                 content=content,
                 image=image,
             )
-
-            # Broadcasting the new message via WebSocket
+           # Broadcasting the new message via WebSocket
             from asgiref.sync import async_to_sync
             from channels.layers import get_channel_layer
             channel_layer = get_channel_layer()
@@ -127,6 +128,7 @@ def event_settings(request, client_url):
         form = MessageBoardForm(request.POST, request.FILES, instance=client)
         if form.is_valid():
             form.save()
+            messages.success(request, "Event settings updated successfully!")
             return redirect("event_settings", client_url=client.client_url)
         else:
             print("Form is invalid. Errors:", form.errors)

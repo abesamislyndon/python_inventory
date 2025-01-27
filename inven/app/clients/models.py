@@ -1,6 +1,10 @@
 # models.py
 from django.contrib.auth.models import User
 from django.db import models
+from PIL import Image
+import os
+import pillow_heif  # Import this to enable HEIC support in Pillow
+
 
 # Event model
 class Client(models.Model):
@@ -18,9 +22,8 @@ class Client(models.Model):
     
 #Event Message
 class ClientMsg(models.Model):
-
     guest_name = models.CharField(max_length=100)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)  # Corrected field name
+    client = models.ForeignKey('Client', on_delete=models.CASCADE)  # Ensure Client is defined in your app
     content = models.TextField()
     image = models.ImageField(upload_to='guest_messages/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -28,4 +31,29 @@ class ClientMsg(models.Model):
     
     def __str__(self):
         return f"{self.guest_name}: {self.content[:50]}"
+    
+    def save(self, *args, **kwargs):
+        # Save the instance first to generate the image path
+        super().save(*args, **kwargs)
+        
+        # Convert HEIC to JPEG if necessary
+        if self.image and self.image.path.lower().endswith('.heic'):
+            self.convert_heic_to_jpeg()
+
+    def convert_heic_to_jpeg(self):
+        image_path = self.image.path
+        
+        # Open the HEIC image using Pillow (with pillow-heif plugin)
+        pillow_heif.register_heif_opener()  # Ensure HEIC support is registered
+        with Image.open(image_path) as img:
+            # Define the new file path with .jpeg extension
+            jpeg_path = os.path.splitext(image_path)[0] + '.jpeg'
+            img.save(jpeg_path, format='JPEG')  # Save as JPEG
+            
+            # Update the model's image field to point to the new file
+            self.image.name = os.path.splitext(self.image.name)[0] + '.jpeg'
+            self.save()  # Save the updated instance
+            
+            # Remove the original HEIC file
+            os.remove(image_path)
 

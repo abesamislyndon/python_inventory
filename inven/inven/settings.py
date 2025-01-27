@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+from .utils import dynamic_url
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,18 +29,17 @@ INSTALLED_APPS = [
     'app.accounts',
     'app.dashboards',
     'app.clients',
-       
     'django.contrib.sites',  # Required for allauth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',  # Include Google provider
-    'django_extensions'
+    'django_extensions',
+    'tailwind',
 ]
 
+
 SITE_ID = 1
-
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -153,7 +153,6 @@ CHANNEL_LAYERS = {
         },
     },
 }
-
 
 # Google OAuth Settings
 SOCIALACCOUNT_PROVIDERS = {

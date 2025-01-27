@@ -1,12 +1,11 @@
 {% extends 'with_sidebar_base.html' %}
 {% block content %}
-  <div class="items-center bg-white  dark:bg-white">
+  <div class="items-center bg-white dark:bg-white">
     <!-- component -->
     <div class="sm:px-6 w-full">
       <div class="px-4 md:px-0 py-4 md:py-7">
         <div class="flex items-left justify-between">
           <p tabindex="0" class="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800">My Events</p>
-         
           <div class="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-sm">
             <p>Sort By:</p>
             <select aria-label="select" class="focus:text-indigo-600 focus:outline-none bg-transparent ml-1">
@@ -17,21 +16,26 @@
           </div>
         </div>
         <div class="mt-3">
-          <a  href = "{% url 'new' %}" class="py-3 px-2 border  border-[#4935db] text-sm rounded-sm text-[#3220b3] bg-[#fff]  hover:bg-[#d8d4f4]">+ Create new event</a>
+          <a href="{% url 'new' %}" class="py-3 px-2 border border-[#4935db] text-sm rounded-sm text-[#3220b3] bg-[#fff] hover:bg-[#d8d4f4]">+ Create new event</a>
         </div>
       </div>
       <div class="bg-white py-4 md:py-0 px-4 md:px-8 xl:px-0">
-        <div class="mt-7 ">
+        <div class="mt-7">
           <table class="w-full whitespace-nowrap">
-          <thead class="text-left bg-[#e9e6ff] border">
-            <th class = "p-3"> Events</th>
-            <th>Form Url</th>
-            <th>Photo Wall</th>
-            <th>Settings</th>
-          </thead>
+            <thead class="text-left bg-[#e9e6ff] border">
+              <th class="p-3">Event Date</th>
+              <th class="p-3">Event Name</th>
+              <th>Form Url</th>
+              <th>Photo Wall</th>
+              <th>Settings</th>
+            </thead>
             <tbody>
               {% for client in client_list %}
                 <tr class="bg-[#faf9ff] h-20 border">
+                  <td class="pl-5">
+                    <div class="flex items-center">{{ client.event_date|date:'F d, Y' }}</div>
+                  </td>
+
                   <td>
                     <div class="flex items-center pl-6">
                       <p class="text-sm font-medium leading-none text-gray-700 mr-2">{{ client.event_name }}</p>
@@ -66,19 +70,15 @@
                         </svg>
                       </button>
                       <div class="dropdown-content bg-white shadow w-auto absolute z-30 right-0 mr-6 opacity-0 transform scale-95 transition-all duration-200 ease-in-out hidden">
-                      
-                        <a href="{% url 'edit_client' client.id %}" tabindex="0" class=" block focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">Edit Events</a>
-                     
+                        <a href="{% url 'edit_client' client.id %}" tabindex="0" class="block focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">Edit Events</a>
+
                         <a href="{% url 'event_settings' client.client_url %}" tabindex="0" class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">Event Settings</a>
-                 <form action="{% url 'delete_event' client.id %}" method="POST" class="delete-form">
-                  {% csrf_token %}
-                            <div tabindex="0" class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
-                              <button type="button" onclick="confirmDelete(this)">Delete</button>
- 
-                            
-                            </div>
-                            
-                        </form>    
+                        <form action="{% url 'delete_event' client.id %}" method="POST" class="delete-form">
+                          {% csrf_token %}
+                          <div tabindex="0" class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
+                            <button type="button" onclick="confirmDelete(this)">Delete this events</button>
+                          </div>
+                        </form>
                       </div>
                     </div>
                   </td>
@@ -90,7 +90,7 @@
       </div>
     </div>
   </div>
-   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     function dropdownFunction(element) {
       const dropdown = element.nextElementSibling
@@ -108,45 +108,40 @@
         dropdown.classList.remove('opacity-100', 'scale-100')
       }
     }
-
-
- function confirmDelete(button) {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: 'You won\'t be able to revert this!',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, delete it!',
-    cancelButtonText: 'No, cancel!'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Add CSRF token to headers
-      const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
-      fetch(button.closest('form').action, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken,  // Add CSRF token to the header
-        },
-        body: JSON.stringify({})  // No body needed for deletion, just to trigger the POST request
-      })
-      .then(response => {
-        if (response.ok) {
-          window.location.reload();  // Reload to reflect changes
-        } else {
-          alert("Failed to delete the event.");
+    
+    function confirmDelete(button) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Add CSRF token to headers
+          const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value
+          fetch(button.closest('form').action, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': csrfToken // Add CSRF token to the header
+            },
+            body: JSON.stringify({}) // No body needed for deletion, just to trigger the POST request
+          })
+            .then((response) => {
+              if (response.ok) {
+                window.location.reload() // Reload to reflect changes
+              } else {
+                alert('Failed to delete the event.')
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error)
+            })
         }
       })
-      .catch(error => {
-        console.error("Error:", error);
-      });
     }
-  });
-}
-
-
   </script>
-
 {% endblock %}
 <!-- SweetAlert -->
-

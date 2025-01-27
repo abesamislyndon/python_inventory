@@ -1,15 +1,87 @@
 <div class="container mx-auto py-1">
- <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="form-group">  
-        {{ form.event_logo.label_tag }}
-        {{ form.event_logo }}
-    </div>
-    <div class="form-group mt-7">
-        {{ form.theme_color.label_tag }}
-        <p class="text-sm text-[#858484]">Choose a theme color for your brand. We'll use that throughout the public pages (Photo Wall, Album, etc.)</p>
-        {{ form.theme_color }}
-    </div>
-    <button type="submit" class="mt-10 text-[0.7em] right-2 top-2 px-4 py-2 bg-[#5454ce] text-white rounded hover:bg-[#4b4bc3]">Save</button>
-  </form>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Event Logo -->
+        <div class="form-group">
+            <label for="id_event_logo">{{ form.event_logo.label }}</label>
+            {{ form.event_logo }}
+            
+            {% if form.event_logo.value %}
+                <!-- Display the uploaded image if there is a value -->
+                <img src="{{ form.event_logo.value.url }}" alt="Event Logo" class="mt-2 w-40 h-auto" />
+            {% endif %}
+        </div>
+        
+        <!-- Event Font Dropdown -->
+        <div class="form-group mt-7">
+            {{ form.event_font.label_tag }}
+            <div id="fontDropdown" class="custom-dropdown mt-2">
+                <span>Select Font</span>
+                <div id="fontPreview" class="font-preview" style="font-family: '{{ form.event_font.value }}';">
+                    {% if form.event_font.value %}
+                        {{ form.event_font.value }}
+                    {% else %}
+                        Choose a Font
+                    {% endif %}
+                </div>
+                <div id="fontList" class="dropdown-items">
+                    {% for value, label in form.event_font.field.choices %}
+                        <div class="font-preview" data-font="{{ value }}" style="font-family: '{{ value }}';">
+                            {{ label }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- Hidden input to store the selected font -->
+            <input type="hidden" name="event_font" id="selectedFont" value="{{ form.event_font.value }}">
+        </div>
+
+        <!-- Theme Color -->
+        <div class="form-group mt-7">
+            {{ form.theme_color.label_tag }}
+            <p class="text-sm text-[#858484]">Choose a theme color for your brand. We'll use that throughout the public pages (Photo Wall, Album, etc.)</p>
+            {{ form.theme_color }}
+            {% if form.theme_color.value %}
+                <!-- Display the selected theme color -->
+                {% comment %} <div class="mt-2" style="width: 50px; height: 50px; background-color: {{ form.theme_color.value }};"></div> {% endcomment %}
+            {% endif %}
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="mt-10 text-[0.7em] right-2 top-2 px-4 py-2 bg-[#5454ce] text-white rounded hover:bg-[#4b4bc3]">Save</button>
+    </form>
 </div>
+
+<script>
+    document.querySelector('input[type="file"][name="event_logo"]').addEventListener('change', function(event) {
+        var logoInput = event.target;
+
+        if (logoInput.files && logoInput.files[0]) {
+            var file = logoInput.files[0];
+            var img = new Image();
+            img.onload = function() {
+                // Check if the image dimensions are 450px by 450px
+                if (img.width !== 450 || img.height !== 450) {
+                    // Use SweetAlert2 with toast settings
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid Logo Dimensions',
+                        text: 'The logo image must be 450px by 450px.',
+                        position: 'top-end',  // Position the alert in the top-right corner
+                        toast: true,          // Make it a toast-style alert
+                        showConfirmButton: false,  // No confirm button
+                        timer: 6000,           // Alert disappears after 3 seconds
+                        timerProgressBar: true  // Optionally show a progress bar during the timer
+                    });
+
+                    logoInput.value = '';  // Clear the selected file if the dimensions don't match
+                }
+            };
+            img.src = URL.createObjectURL(file);
+        }
+    });
+</script>
+
+
+

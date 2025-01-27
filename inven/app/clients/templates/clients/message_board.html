@@ -14,7 +14,7 @@
 
 .marquee-track {
   display: flex;
-  animation: marquee 90s linear infinite;
+  animation: marquee 100s linear infinite;
   width: auto;
 }
 
@@ -51,47 +51,54 @@
   margin-bottom: 0.5rem;
 }
 
-@keyframes marquee {
-  0% {
-    transform: translateX(100%);
+  @keyframes marquee {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
   }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
   </style>
 </head>
-<body class="bg-[{{client.theme_settings.theme_color}}] p-6">
-
-  <div class="container mx-auto">
-    <h1 class="mt-10 mb-20 text-3xl font-bold  text-center">{{ client.event_name }}</h1>
+<body class="bg-[{{client.theme_settings.theme_color}}] p-6 custom-bg">
+ <div class="flex flex-col min-h-screen">
+    <h1 class="mt-10 mb-20 text-5xl font-bold  text-center">{{ client.event_name }}</h1>
     <!-- Marquee Section -->
-    <div class="marquee-container ">
-      <div id="marquee-track" class="marquee-track">
-        <!-- Marquee items will be inserted here dynamically -->
-        {% for message in messages %}
-          <div class="marquee-item bg-[{{client.theme_settings.card_color}}]">
-            <div class=" marquee-item-content">
-              <h1 class="text-2xl font-semibold">
-               From: {{ message.guest_name }} 
-              </h1>
-              <p class="text-slate-600 leading-normal font-light mt-3 mb-10">{{ message.content }}</p>
-              {% if message.image %}
-                <img src="http://localhost:8000/events{{ message.image.url }}" alt="Message Image" class="mt-2 rounded shadow">
-              {% endif %}
-              <small class="text-gray-500">{{ message.created_at }}</small>
-            </div>
+  <div class="marquee-container">
+  {% if messages %}
+    <div id="marquee-track" class="marquee-track">
+      <!-- Marquee items will be inserted here dynamically -->
+      {% for message in messages %}
+        <div class="marquee-item bg-[{{ client.theme_settings.card_color }}]">
+          <div class="marquee-item-content">
+            <h1 class="text-2xl font-semibold">
+              From: {{ message.guest_name }}
+            </h1>
+            <p class="text-slate-600 leading-normal font-light mt-3 mb-10">{{ message.content }}</p>
+            {% if message.image %}
+              <img src="http://localhost:8000/events{{ message.image.url }}" alt="Message Image" class="mt-2 rounded shadow-md border border-[#000]">
+            {% endif %}
+            <small class="text-gray-500">{{ message.created_at }}</small>
           </div>
-        {% endfor %}
-      </div>
+        </div>
+      {% endfor %}
     </div>
+  {% else %}
+    <p class="text-center text-3xl text-gray-500">Scan to view or add photos!</p>
+       <img src="data:image/png;base64,{{ qr_image_wall }}" alt="QR Code" class="w-1/4 mx-auto my-4" />
+
+  {% endif %}
+  </div>
+
 
     <!-- Carousel Section -->
     {% comment %} <div id="carousel" class="carousel">
       <!-- Carousel items will be inserted here dynamically -->
     </div> {% endcomment %}
-       <span class="mt-1 text-[#000] text-[0.5em]">© All rights reserved Tapok PH</span>
+       <footer class="mt-auto">
+    <span class="text-[#000] text-[0.5em]">© All rights reserved Tapok PH</span>
+  </footer>
   </div>
 
 <script>
@@ -113,7 +120,7 @@
           const newMarqueeMessage = `
             <div class="marquee-item">
               <div class="marquee-item-content">
-                <h2 class="text-2xl font-semibold">${data.message.guest_name}</h2>
+                <h2 class="text-2xl font-semibold">From:${data.message.guest_name}</h2>
                 <p>${data.message.content}</p>
                 ${data.message.image_url ? `<img src="http://localhost:8000/events${ data.message.image_url }" alt="Message Image"
                   class="mt-2 rounded shadow">` : ""}

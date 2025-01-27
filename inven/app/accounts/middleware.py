@@ -14,6 +14,7 @@ class RoleRequiredMiddleware:
             reverse('logout'),  # Logout page
             reverse('google_login'),  # Google login page
             reverse('account_logout'),  # Allauth logout
+            reverse('register'),  # Allauth logout
         ]
 
         # Include all allauth-related paths dynamically
@@ -21,6 +22,8 @@ class RoleRequiredMiddleware:
             '/accounts/google/',  # General Google OAuth flow
             '/accounts/social/login/cancelled/',  # Cancelled login
             '/accounts/social/signup/',  # Social signup
+            '/register/',  # General Google OAuth flow
+            '/register/media/',
             '/events/message_board/',
             '/events/media/guest_messages/',
             '/ws/message_board/',

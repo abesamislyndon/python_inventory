@@ -1,12 +1,12 @@
-{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tapok</title>
-    <link rel="stylesheet" href="{% static 'dist/styles.css' %}" type="text/css">
-    <script src="https://cdn.tailwindcss.com"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tapok PH</title>
+  {% load static tailwind_tags %}
+   {% tailwind_css %}
 </head>
 <style>
 </style>
@@ -67,6 +67,24 @@
             {% endblock %}
         </main>
         </div>
+
+
+{% if messages %}
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    {% for message in messages %}
+      Swal.fire({
+        icon: 'success',
+        title: '{{ message }}',
+        position: 'top-end',  // Position the alert in the top-right corner
+        toast: true,          // Make it a toast-style alert
+        showConfirmButton: false,  // No confirm button
+        timer: 3000           // Alert disappears after 3 seconds
+      });
+    {% endfor %}
+  </script>
+{% endif %}
+
 </body>
 </html>
 <!-- end of html -->

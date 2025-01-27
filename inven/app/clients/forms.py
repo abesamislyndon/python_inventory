@@ -1,6 +1,9 @@
 from django import forms
 from .models import Client, ClientMsg
 import uuid
+from django.core.exceptions import ValidationError
+from PIL import Image
+
 
 class ClientForm(forms.ModelForm):
     class Meta:
@@ -14,6 +17,11 @@ class ClientForm(forms.ModelForm):
             'guest_count': forms.TextInput(attrs={
                 'class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight',
                 'placeholder': 'Guest Count',
+            }),
+                'event_date': forms.DateInput(attrs={
+                'class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight datepicker',
+                'placeholder': 'Event Date',
+                'type': 'date' 
             }),
             'client_url': forms.HiddenInput(attrs={
                 'value': str(uuid.uuid4())  # Set a default UUID value
@@ -38,23 +46,22 @@ class GuestForm(forms.ModelForm):
             }),
         }
 
-
-
-
 class MessageBoardForm(forms.ModelForm):
-    
     event_logo = forms.ImageField(
         required=False,
         label="Event Logo",
-        widget=forms.ClearableFileInput(attrs={"class": "bg-[#f3f3f3] mt-5"}),
+        widget=forms.ClearableFileInput(attrs={
+            "class": "relative m-10 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3  file:py-[0.32rem] file:text-surface focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none dark:border-white/70 dark:text-white  file:dark:text-white",
+            "type": "file"
+        }),
     )
-    
+
     theme_color = forms.CharField(
         required=False,
         label="Theme Color",
         widget=forms.TextInput(attrs={"type": "color", "class": "form-control mt-2 mb-2"}),
     )
-    
+
     card_color = forms.CharField(
         required=False,
         label="Card Color",
@@ -87,6 +94,14 @@ class MessageBoardForm(forms.ModelForm):
         cleaned_data["card_color"] = card_color
 
         return cleaned_data
+
+    def clean_event_logo(self):
+        event_logo = self.cleaned_data.get("event_logo")
+        if event_logo:
+            img = Image.open(event_logo)
+            if img.width != 450 or img.height != 450:
+                raise ValidationError("The event logo must be 450px by 450px.")
+        return event_logo
 
     def get_lighter_color(self, hex_color, percent=0.7):
         """Function to lighten a color by a given percentage"""

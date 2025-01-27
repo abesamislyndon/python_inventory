@@ -1,56 +1,53 @@
 {% extends 'with_sidebar_base.html' %}
 {% block content %}
-<div class="items-center bg-gray-100 min-h-screen">
-    <form 
-        action="{% if client %}{% url 'edit_client' client.id %}{% else %}{% url 'create_client' %}{% endif %}" 
-        method="POST" 
-        enctype="multipart/form-data" 
-        autocomplete="off">
-        <div class="w-full pt-10 pl-10">
-            {% csrf_token %}
-            <div class="flex flex-wrap">
-                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <div>
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                            Event Name
-                        </label>
-                        {{ form.event_name }}
-                    </div>
-                    <div>
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                            Client URL
-                        </label>
-                        {{ form.client_url }}
-                    </div>
-                    <div>
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                            No. Guest
-                        </label>
-                        {{ form.guest_count }}
-                    </div>
-                    <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                        {% if client %} Update {% else %} Submit {% endif %}
-                    </button>
-                </div>
+  <div class="items-center bg-[#fff] min-h-screen">
+  <div class="container mx-auto bg-slate-300">
+    <h1 class="mt-10  mb-1 text-2xl font-bold  text-center">{{ client.event_name }}</h1>
+  </div>
+    <form action="{% if client %}
+      {% url 'edit_client' client.id %}
+      {% else %}
+        {% url 'create_client' %}
+      {% endif %}"
+      method="POST"
+      enctype="multipart/form-data"
+      autocomplete="off">
+      <div class="w-full pt-10 pl-10">
+        {% csrf_token %}
+        <div class="flex flex-wrap">
+          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <div>
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">Event Name</label>
+              {{ form.event_name }}
             </div>
+            <div>
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">Date:</label>
+              {{ form.event_date }}
+              {{ form.client_url }}
+            </div>
+            <div>
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">No. Guest</label>
+              {{ form.guest_count }}
+            </div>
+            <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+              {% if client %}
+                Update
+              {% else %}
+                Submit
+              {% endif %}
+            </button>
+          </div>
         </div>
+      </div>
     </form>
-</div>
-
-{% if messages %}
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script>
-    {% for message in messages %}
-      Swal.fire({
-        icon: 'success',
-        title: '{{ message }}',
-        position: 'top-end',  // Position the alert in the top-right corner
-        toast: true,          // Make it a toast-style alert
-        showConfirmButton: false,  // No confirm button
-        timer: 3000           // Alert disappears after 3 seconds
-      });
-    {% endfor %}
-  </script>
-{% endif %}
-
+  </div>
 {% endblock %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    flatpickr('.datepicker', {
+      dateFormat: 'Y-m-d' // Match the format expected by your model
+    })
+  })
+</script>
